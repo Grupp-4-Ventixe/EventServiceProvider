@@ -56,6 +56,7 @@ public class EventsService(IEventRepository repository, EventDbContext context) 
         };
     }
 
+   
     public async Task<IEnumerable<Event>> GetEventsByStatusAsync(EventStatus? status)
     {
         Expression<Func<EventEntity, bool>>? where = null;
