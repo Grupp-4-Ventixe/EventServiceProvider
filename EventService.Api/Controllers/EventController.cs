@@ -50,7 +50,7 @@ public class EventsController(IEventService eventService) : ControllerBase
         var response = result.Result!.MapTo<EventResponseFormData>();
         return Ok(response);
     }
-
+    
     [HttpPut("{id}")]
     public async Task<IActionResult> UpdateEvent(Guid id, [FromBody] UpdateEventFormData model) 
     {
