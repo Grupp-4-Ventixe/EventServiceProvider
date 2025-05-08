@@ -5,17 +5,19 @@ using Data.Repositories;
 using Domain.Extensions;
 using Domain.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 
 namespace Business.Services;
 
 public interface IEventService
 {
-    Task<EventResult> CreateEventAsync(CreateEventFormData dto);
+    Task<EventResult> CreateEventAsync(CreateEventFormData model);
     Task<EventResult<Event>> GetEventByIdAsync(Guid id);
     Task<EventResult<IEnumerable<Event>>> GetAllEventsAsync();
     Task<EventResult> DeleteEventAsync(Guid id);
     Task<EventEntity?> UpdateEventAsync(EventEntity eventEntity);
+    Task<IEnumerable<Event>> GetEventsByStatusAsync(EventStatus? status);
 }
 
 public class EventsService(IEventRepository repository, EventDbContext context) : IEventService
@@ -23,12 +25,12 @@ public class EventsService(IEventRepository repository, EventDbContext context) 
     private readonly IEventRepository _repository = repository;
     private readonly EventDbContext _context = context;
 
-    public async Task<EventResult> CreateEventAsync(CreateEventFormData dto)
+    public async Task<EventResult> CreateEventAsync(CreateEventFormData model)
     {
-        if (dto == null)
+        if (model == null)
             return new EventResult { Succeeded = false, StatusCode = 400, Error = "Input was null." };
 
-        var entity = dto.MapTo<EventEntity>();
+        var entity = model.MapTo<EventEntity>();
         entity.Id = Guid.NewGuid(); 
 
         var result = await _repository.AddAsync(entity);
@@ -52,6 +54,19 @@ public class EventsService(IEventRepository repository, EventDbContext context) 
             Error = result.Error,
             Result = result.Result
         };
+    }
+
+    public async Task<IEnumerable<Event>> GetEventsByStatusAsync(EventStatus? status)
+    {
+        Expression<Func<EventEntity, bool>>? where = null;
+
+        if (status.HasValue)
+        {
+            where = e => e.Status == status.Value;
+        }
+
+        var result = await _repository.GetAllAsync(where: where);
+        return result.Result ?? Enumerable.Empty<Event>();
     }
 
     public async Task<EventResult<IEnumerable<Event>>> GetAllEventsAsync()
@@ -80,6 +95,8 @@ public class EventsService(IEventRepository repository, EventDbContext context) 
         exists.Location = eventEntity.Location;
         exists.ImageUrl = eventEntity.ImageUrl;
         exists.Description = eventEntity.Description;
+        exists.Status = eventEntity.Status;
+
 
         await _context.SaveChangesAsync();
         return exists;
