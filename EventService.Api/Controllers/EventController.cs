@@ -13,18 +13,25 @@ public class EventsController(IEventService eventService) : ControllerBase
     private readonly IEventService _eventService = eventService;
 
     [HttpPost]
-    public async Task<IActionResult> CreateEvent([FromBody] CreateEventFormData dto)
+    public async Task<IActionResult> CreateEvent([FromBody] CreateEventFormData model)
     {
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
-        var result = await _eventService.CreateEventAsync(dto);
+        var result = await _eventService.CreateEventAsync(model);
         return StatusCode(result.StatusCode, result.Succeeded ? "Event created" : result.Error);
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetAll()
+    public async Task<IActionResult> GetAll([FromQuery] EventStatus? status)
     {
+        if (status.HasValue)
+        {
+            var filtered = await _eventService.GetEventsByStatusAsync(status);
+            var filteredResponse = filtered.Select(e => e.MapTo<EventResponseFormData>());
+            return Ok(filteredResponse);
+        }
+
         var result = await _eventService.GetAllEventsAsync();
         if (!result.Succeeded)
             return StatusCode(result.StatusCode, result.Error);
@@ -45,7 +52,7 @@ public class EventsController(IEventService eventService) : ControllerBase
     }
 
     [HttpPut("{id}")]
-    public async Task<IActionResult> UpdateEvent(Guid id, [FromBody] UpdateEventFormData dto)
+    public async Task<IActionResult> UpdateEvent(Guid id, [FromBody] UpdateEventFormData model) 
     {
         var result = await _eventService.GetEventByIdAsync(id);
         if (!result.Succeeded || result.Result == null)
@@ -56,13 +63,14 @@ public class EventsController(IEventService eventService) : ControllerBase
         var entity = new EventEntity
         {
             Id = domainModel.Id,
-            EventName = dto.EventName,
-            Category = dto.Category,
-            ImageUrl = dto.ImageUrl,
-            StartDateTime = dto.StartDateTime,
-            EndDateTime = dto.EndDateTime,
-            Location = dto.Location,
-            Description = dto.Description
+            EventName = model.EventName,
+            Category = model.Category,
+            ImageUrl = model.ImageUrl,
+            StartDateTime = model.StartDateTime,
+            EndDateTime = model.EndDateTime,
+            Location = model.Location,
+            Description = model.Description,
+            Status = model.Status
         };
 
         var updated = await _eventService.UpdateEventAsync(entity);
@@ -77,7 +85,8 @@ public class EventsController(IEventService eventService) : ControllerBase
             StartDateTime = updated.StartDateTime,
             Location = updated.Location,
             Description = updated.Description,
-            ImageUrl = updated.ImageUrl
+            ImageUrl = updated.ImageUrl,
+            Status = updated.Status
         };
 
         return Ok(response);
