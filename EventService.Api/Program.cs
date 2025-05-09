@@ -20,6 +20,12 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IEventService, EventsService>();
 builder.Services.AddScoped<IEventRepository, EventRepository>();
 builder.Services.AddScoped<IEventDetailsService, EventDetailsService>();
+builder.Services.AddScoped<IMerchandiseService, MerchandiseService>();
+builder.Services.AddScoped<IPackageService, PackageService>();
+builder.Services.AddScoped<ISeatPlanService, SeatPlanService>();
+
+
+
 
 
 var app = builder.Build();

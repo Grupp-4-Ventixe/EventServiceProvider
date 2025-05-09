@@ -8,6 +8,7 @@ namespace EventService.Api.Controllers
     public class EventDetailsController(IEventDetailsService eventDetailsService) : ControllerBase
     {
         private readonly IEventDetailsService _eventDetailsService = eventDetailsService;
+
         [HttpGet("details/{id}")]
         public async Task<IActionResult> GetEventDetails(Guid id)
         {

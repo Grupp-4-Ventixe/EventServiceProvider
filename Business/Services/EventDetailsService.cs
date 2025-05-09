@@ -1,7 +1,6 @@
 ﻿using Business.Models;
 using Data.Repositories;
 using Domain.Models;
-using Domain.Extensions;
 
 namespace Business.Services;
 
@@ -13,10 +12,10 @@ public interface IEventDetailsService
 public class EventDetailsService(IEventRepository repository) : IEventDetailsService
 {
     private readonly IEventRepository _repository = repository;
-   
+
     public async Task<EventResult<EventDetailsModel>> GetEventDetailsByIdAsync(Guid id)
     {
-        var result = await _repository.GetAsync(x => x.Id == id);
+        var result = await _repository.GetEntityWithDetailsAsync(id);
 
         if (!result.Succeeded || result.Result == null)
         {
@@ -28,7 +27,43 @@ public class EventDetailsService(IEventRepository repository) : IEventDetailsSer
             };
         }
 
-        var model = result.Result.MapTo<EventDetailsModel>();
+        var entity = result.Result;
+
+        var model = new EventDetailsModel
+        {
+            Id = entity.Id,
+            EventName = entity.EventName,
+            Category = entity.Category,
+            StartDateTime = entity.StartDateTime,
+            Location = entity.Location,
+            Price = entity.Price,
+            Description = entity.Description,
+            Status = entity.Status,
+            Merchandise = entity.Merchandise.Select(m => new MerchandiseModel
+            {
+                Id = m.Id,
+                Name = m.Name,
+                Price = m.Price,
+                ImageUrl = m.ImageUrl
+            }).ToList(),
+            Packages = entity.Packages.Select(p => new PackageModel
+            {
+                Id = p.Id,
+                Name = p.Name,
+                Price = p.Price,
+                PackageDetails = p.PackageDetails
+            }).ToList(),
+            SeatPlan = entity.SeatPlan == null ? null : new SeatPlanModel
+            {
+                Id = entity.SeatPlan.Id,
+                Categories = entity.SeatPlan.Categories.Select(c => new SeatCategoryModel
+                {
+                    Name = c.Name,
+                    Price = c.Price,
+                    AvailableSeats = c.AvailableSeats
+                }).ToList()
+            }
+        };
 
         return new EventResult<EventDetailsModel>
         {
@@ -37,4 +72,5 @@ public class EventDetailsService(IEventRepository repository) : IEventDetailsSer
             Result = model
         };
     }
+
 }
