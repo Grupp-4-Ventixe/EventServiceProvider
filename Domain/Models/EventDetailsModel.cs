@@ -11,7 +11,7 @@ public class EventDetailsModel
     public string Description { get; set; } = null!;
     public EventStatus Status { get; set; }
 
-    //public List<MerchItemModel> Merchandise { get; set; }
-    //public List<PackageModel> Packages { get; set; }
-    //public SeatPlanModel SeatPlan { get; set; } lägg till när vi har det klart!
+    public List<MerchandiseModel> Merchandise { get; set; } = [];
+    public List<PackageModel> Packages { get; set; } = [];
+    public SeatPlanModel? SeatPlan { get; set; }
 }
