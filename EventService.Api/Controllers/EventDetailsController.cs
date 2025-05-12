@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Business.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace EventService.Api.Controllers
 {
@@ -9,6 +10,7 @@ namespace EventService.Api.Controllers
     {
         private readonly IEventDetailsService _eventDetailsService = eventDetailsService;
 
+        [Authorize]
         [HttpGet("details/{id}")]
         public async Task<IActionResult> GetEventDetails(Guid id)
         {

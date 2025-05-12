@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Business.Services;
 using Domain.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace EventService.Api.Controllers;
 
@@ -10,6 +11,7 @@ public class MerchandiseController(IMerchandiseService merchandiseService) : Con
 {
     private readonly IMerchandiseService _merchandiseService = merchandiseService;
 
+    [Authorize(Roles = "Admin")]
     [HttpPost]
     public async Task<IActionResult> AddMerchItem([FromBody] CreateMerchandiseFormData model)
     {
@@ -17,6 +19,7 @@ public class MerchandiseController(IMerchandiseService merchandiseService) : Con
         return StatusCode(result.StatusCode, result.Succeeded ? "Merchandise added." : result.Error);
     }
 
+    [Authorize(Roles = "Admin")]
     [HttpPut("{id}")]
     public async Task<IActionResult> UpdateMerch(Guid id, [FromBody] UpdateMerchandiseFormData model)
     {
@@ -24,6 +27,7 @@ public class MerchandiseController(IMerchandiseService merchandiseService) : Con
         return StatusCode(result.StatusCode, result.Succeeded ? "Updated" : result.Error);
     }
 
+    [Authorize(Roles = "Admin")]
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteMerch(Guid id)
     {

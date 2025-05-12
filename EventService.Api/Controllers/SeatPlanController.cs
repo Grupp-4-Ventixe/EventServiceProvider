@@ -1,5 +1,6 @@
 ﻿using Business.Services;
 using Domain.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EventService.Api.Controllers;
@@ -10,6 +11,7 @@ public class SeatPlanController(ISeatPlanService seatPlanService) : ControllerBa
 {
     private readonly ISeatPlanService _seatPlanService = seatPlanService;
 
+    [Authorize(Roles = "Admin")]
     [HttpPost]
     public async Task<IActionResult> AddSeatPlan([FromBody] CreateSeatPlanFormData model)
     {
@@ -17,6 +19,7 @@ public class SeatPlanController(ISeatPlanService seatPlanService) : ControllerBa
         return StatusCode(result.StatusCode, result.Succeeded ? "Seat plan added." : result.Error);
     }
 
+    [Authorize(Roles = "Admin")]
     [HttpPut("{eventId}")]
     public async Task<IActionResult> UpdateSeatPlan(Guid eventId, [FromBody] UpdateSeatPlanFormData model)
     {
@@ -24,6 +27,7 @@ public class SeatPlanController(ISeatPlanService seatPlanService) : ControllerBa
         return StatusCode(result.StatusCode, result.Succeeded ? "Updated" : result.Error);
     }
 
+    [Authorize(Roles = "Admin")]
     [HttpDelete("{eventId}")]
     public async Task<IActionResult> DeleteSeatPlan(Guid eventId)
     {

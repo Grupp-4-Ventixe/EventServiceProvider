@@ -3,6 +3,7 @@ using Business.Services;
 using Domain.Extensions; 
 using Domain.Models;
 using Data.Entities;
+using Microsoft.AspNetCore.Authorization;
 
 namespace EventService.Api.Controllers;
 
@@ -12,6 +13,7 @@ public class EventsController(IEventService eventService) : ControllerBase
 {
     private readonly IEventService _eventService = eventService;
 
+    [Authorize(Roles = "Admin")]
     [HttpPost]
     public async Task<IActionResult> CreateEvent([FromBody] CreateEventFormData model)
     {
@@ -21,7 +23,8 @@ public class EventsController(IEventService eventService) : ControllerBase
         var result = await _eventService.CreateEventAsync(model);
         return StatusCode(result.StatusCode, result.Succeeded ? "Event created" : result.Error);
     }
-
+    
+    [Authorize]
     [HttpGet]
     public async Task<IActionResult> GetAll([FromQuery] EventStatus? status)
     {
@@ -39,7 +42,8 @@ public class EventsController(IEventService eventService) : ControllerBase
         var response = result.Result!.Select(e => e.MapTo<EventResponseFormData>());
         return Ok(response);
     }
-
+    
+    [Authorize]
     [HttpGet("{id}")]
     public async Task<IActionResult> GetById(Guid id)
     {
@@ -51,6 +55,7 @@ public class EventsController(IEventService eventService) : ControllerBase
         return Ok(response);
     }
     
+    [Authorize(Roles = "Admin")]
     [HttpPut("{id}")]
     public async Task<IActionResult> UpdateEvent(Guid id, [FromBody] UpdateEventFormData model) 
     {
@@ -92,6 +97,8 @@ public class EventsController(IEventService eventService) : ControllerBase
         return Ok(response);
     }
 
+
+    [Authorize(Roles = "Admin")]
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(Guid id)
     {
