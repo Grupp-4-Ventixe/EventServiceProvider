@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.12.35527.113 d17.12
+VisualStudioVersion = 17.12.35527.113
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventService.Api", "EventService.Api\EventService.Api.csproj", "{A74BB1FC-04F9-46C9-8B35-754BEC030B1C}"
 EndProject
@@ -10,6 +10,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Business", "Business\Business.csproj", "{B74E4775-7BF4-46E8-A6EF-FF15F33E6E4E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "Domain\Domain.csproj", "{BD139EBE-95A5-4DEA-AA83-D646EB5EDDF3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventsTests", "EventsTests\EventsTests.csproj", "{B9A418E5-A594-49F8-86DC-2E7B5BDF65AD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,8 +35,15 @@ Global
 		{BD139EBE-95A5-4DEA-AA83-D646EB5EDDF3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BD139EBE-95A5-4DEA-AA83-D646EB5EDDF3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BD139EBE-95A5-4DEA-AA83-D646EB5EDDF3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B9A418E5-A594-49F8-86DC-2E7B5BDF65AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B9A418E5-A594-49F8-86DC-2E7B5BDF65AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B9A418E5-A594-49F8-86DC-2E7B5BDF65AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B9A418E5-A594-49F8-86DC-2E7B5BDF65AD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {0A82FC52-92FC-4F5A-9EFA-7205EB1965DB}
 	EndGlobalSection
 EndGlobal
