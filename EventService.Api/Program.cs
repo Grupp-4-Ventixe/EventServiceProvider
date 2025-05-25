@@ -7,7 +7,7 @@ using System.Text.Json.Serialization;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<EventDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("LocalDb")));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("SqlConnection")));
 
 builder.Services.AddCors(options =>
 {
