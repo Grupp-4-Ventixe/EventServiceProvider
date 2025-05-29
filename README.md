@@ -224,17 +224,31 @@ https://localhost:{port}/swagger
 ## Diagram
 
 ### Aktivitetsdiagram
-- Skapa event
-- Redigera event
-- Radera event
+**Skapa event**  
+![Skapa event](./diagrams/Akitvitetsdiagram_CreateEvent.png)
+
+**Redigera event**  
+![Redigera event](./diagrams/Akitvitetsdiagram_UpdateEvent.png)
+
+**Radera event**  
+![Radera event](./diagrams/Akitvitetsdiagram_DeleteEvent.png)
 
 ### Sekvensdiagram
-- Get all events
-- Create event
-- Delete event
-- View event details
 
+**Skapa event**  
+![Create event](./diagrams/Sekvensdiagram_CreateEvent.png)
 
+**Hämta alla event**  
+![Get all events](./diagrams/Sekvensdiagram_GetAllEvents.png)
+
+**Visa eventdetaljer**  
+![View event details](./diagrams/Sekvensdiagram_ViewEventDetails.png)
+
+**Uppdatera event**  
+![Update event](./diagrams/Sekvensdiagram_UpdateEvent.png)
+
+**Radera event**  
+![Delete event](./diagrams/Sekvensdiagram_DeleteEvent.png)
 
 ---
 
